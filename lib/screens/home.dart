@@ -35,101 +35,18 @@ class HomeScreen extends StatefulWidget {
       ),
       body: ListView(
           padding: const EdgeInsets.all(8),
-          children: createCourseWidgets(courseList)),
+          children: [],
+    ),
+
       floatingActionButton: FloatingActionButton(
         //onPressed: _incrementCounter,
         tooltip: 'Add a course',
         child: Icon(Icons.add),
-      ),
-    );
+      ),);
   }
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
-
-  //Takes in a list of courses, creates a new homepage widget for each one
-  static List<Widget> createCourseWidgets(List<Course> courseList) {
-
-    List<Widget> courses = List<Widget>();
-    isCollapsed = [];
-
-    for (int i = 0; i < courseList.length; i++) {
-      int numAssignments = courseList[i].assignments.length;
-      int numTests = courseList[i].tests.length;
-
-      List<Widget> assignments = [];
-
-      for (int j = 0; j < numAssignments; j++) {
-
-        Widget assignment = Container(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                    new Text(courseList[i].assignments[j].title),
-                    new Text(DateFormat("MM/dd/yyyy")
-                        .format(courseList[i].assignments[j].deadline)),
-                ]),
-            );
-
-        assignments.add(assignment);
-
-      }
-
-      Widget assignmentsWidget = Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: assignments,
-          ),
-        ],
-      );
-
-      isCollapsed.add(true);
-
-      Widget course = Column(children: [
-      InkWell(
-        child: Container(
-            padding: const EdgeInsets.all((32)),
-            child: Column(children: [
-                  Row(
-                    children: [
-                          Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Text(courseList[i].title,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ))),
-                          Text(
-                              numAssignments.toString() +
-                                  " assignments, " +
-                                  numTests.toString() +
-                                  " tests",
-                              style: TextStyle(color: Colors.grey[500]))
-                        ],
-                      ),
-                    ],
-                  ),
-            ])),
-
-        onTap: updateCollapsible,
-      ),
-        Collapsible(
-        child: Container(
-            padding: const EdgeInsets.only(left: 40),
-            child: assignmentsWidget
-        ),
-        collapsed: isCollapsed[i],
-        )
-      ]);
-
-      courses.add(course);
-    }
-
-    return courses;
-  }
 }
 
 class _MyHomePageState extends State<HomeScreen> {
@@ -237,7 +154,7 @@ class _MyHomePageState extends State<HomeScreen> {
       ),
       body: ListView(
           padding: const EdgeInsets.all(8),
-          children: HomeScreen.createCourseWidgets(HomeScreen.courseList)),
+          children: createCourseWidgets(HomeScreen.courseList)),
       floatingActionButton: FloatingActionButton(
         //onPressed: _incrementCounter,
         tooltip: 'Add a course',
