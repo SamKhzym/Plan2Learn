@@ -8,10 +8,18 @@ import 'package:plan2learn/objects/test.dart';
 
 class HomeScreen extends StatefulWidget {
 
-  static List<bool> isCollapsed = [];
+  HomeScreen({Key key, this.title}) : super(key: key);
 
-  //Test course list that will be implemented for the user
-  static List<Course> courseList = [
+  final String title;
+
+  @override
+  State<StatefulWidget> createState() => HomeScreenState();
+
+}
+
+class HomeScreenState extends State<HomeScreen> {
+
+  List<Course> courseList = [
     new Course("ENGINEER 1P13", [
       new Assignment("Design Report", DateTime.utc(2021, 3, 7)),
       new Assignment("Individual Research Report", DateTime.utc(2021, 3, 10)),
@@ -27,46 +35,17 @@ class HomeScreen extends StatefulWidget {
     ])
   ];
 
-  @override
-  Widget build(BuildContext ctxt) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Home Course Page"),
-      ),
-      body: ListView(
-          padding: const EdgeInsets.all(8),
-          children: [],
-    ),
+  bool isCollapsed = false;
 
-      floatingActionButton: FloatingActionButton(
-        //onPressed: _incrementCounter,
-        tooltip: 'Add a course',
-        child: Icon(Icons.add),
-      ),);
-  }
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<HomeScreen> {
-  List<bool> isCollapsed = HomeScreen.isCollapsed;
-
-  void updateCollapsible() {
+  void updateCollapsed() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      isCollapsed = HomeScreen.isCollapsed;
+      isCollapsed = !isCollapsed;
     });
   }
 
   List<Widget> createCourseWidgets(List<Course> courseList) {
 
     List<Widget> courses = List<Widget>();
-    isCollapsed = [];
 
     for (int i = 0; i < courseList.length; i++) {
       int numAssignments = courseList[i].assignments.length;
@@ -80,14 +59,12 @@ class _MyHomePageState extends State<HomeScreen> {
           child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                new Text(courseList[i].assignments[j].title),
+                new Text(courseList[i].assignments[j].title + "--  "),
                 new Text(DateFormat("MM/dd/yyyy")
                     .format(courseList[i].assignments[j].deadline)),
               ]),
         );
-
         assignments.add(assignment);
-
       }
 
       Widget assignmentsWidget = Row(
@@ -98,8 +75,6 @@ class _MyHomePageState extends State<HomeScreen> {
           ),
         ],
       );
-
-      isCollapsed.add(true);
 
       Widget course = Column(children: [
         InkWell(
@@ -129,15 +104,12 @@ class _MyHomePageState extends State<HomeScreen> {
                 ),
               ])),
 
-          onTap: updateCollapsible,
+          //onTap: updateCollapsible,
         ),
-        Collapsible(
-          child: Container(
-              padding: const EdgeInsets.only(left: 40),
-              child: assignmentsWidget
-          ),
-          collapsed: isCollapsed[i],
-        )
+      Container(
+        padding: const EdgeInsets.only(left: 40),
+        child: assignmentsWidget,
+      )
       ]);
 
       courses.add(course);
@@ -147,19 +119,16 @@ class _MyHomePageState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctxt) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Home Course Page"),
       ),
       body: ListView(
-          padding: const EdgeInsets.all(8),
-          children: createCourseWidgets(HomeScreen.courseList)),
-      floatingActionButton: FloatingActionButton(
-        //onPressed: _incrementCounter,
-        tooltip: 'Add a course',
-        child: Icon(Icons.add),
+        padding: const EdgeInsets.all(8),
+        children: createCourseWidgets(courseList),
       ),
-    );
+      );
   }
+
 }
