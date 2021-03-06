@@ -7,18 +7,15 @@ import 'package:collapsible/collapsible.dart';
 import 'package:plan2learn/objects/test.dart';
 
 class HomeScreen extends StatefulWidget {
-
   HomeScreen({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
   State<StatefulWidget> createState() => HomeScreenState();
-
 }
 
 class HomeScreenState extends State<HomeScreen> {
-
   List<Course> courseList = [
     new Course("ENGINEER 1P13", [
       new Assignment("Design Report", DateTime.utc(2021, 3, 7)),
@@ -35,16 +32,16 @@ class HomeScreenState extends State<HomeScreen> {
     ])
   ];
 
-  bool isCollapsed = false;
+  bool isCollapsed = true;
 
-  void updateCollapsed() {
+  void updateCollapsible() {
+    print(isCollapsed);
     setState(() {
       isCollapsed = !isCollapsed;
     });
   }
 
   List<Widget> createCourseWidgets(List<Course> courseList) {
-
     List<Widget> courses = List<Widget>();
 
     for (int i = 0; i < courseList.length; i++) {
@@ -54,15 +51,13 @@ class HomeScreenState extends State<HomeScreen> {
       List<Widget> assignments = [];
 
       for (int j = 0; j < numAssignments; j++) {
-
         Widget assignment = Container(
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                new Text(courseList[i].assignments[j].title + "--  "),
-                new Text(DateFormat("MM/dd/yyyy")
-                    .format(courseList[i].assignments[j].deadline)),
-              ]),
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            new Text(courseList[i].assignments[j].title + "--  "),
+            new Text(DateFormat("MM/dd/yyyy")
+                .format(courseList[i].assignments[j].deadline)),
+          ]),
         );
         assignments.add(assignment);
       }
@@ -104,12 +99,15 @@ class HomeScreenState extends State<HomeScreen> {
                 ),
               ])),
 
-          //onTap: updateCollapsible,
+          onTap: updateCollapsible,
         ),
-      Container(
-        padding: const EdgeInsets.only(left: 40),
-        child: assignmentsWidget,
-      )
+        Visibility(
+          visible: isCollapsed,
+          child: Container(
+            padding: const EdgeInsets.only(left: 40),
+            child:assignmentsWidget,
+          )
+        )
       ]);
 
       courses.add(course);
@@ -128,7 +126,6 @@ class HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(8),
         children: createCourseWidgets(courseList),
       ),
-      );
+    );
   }
-
 }
