@@ -23,7 +23,7 @@ class AddRestBlocksFormState extends State<AddRestBlocksForm> {
   int startTimeMinuteValue = 0;
   int endTimeHourValue = 0;
   int endTimeMinuteValue = 0;
-  String dayOfWeek = "Sunday";
+  String dayOfWeek = "Sun";
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +32,21 @@ class AddRestBlocksFormState extends State<AddRestBlocksForm> {
         appBar: new AppBar(
           title: new Text("Set Rest Period"),
         ),
-        body: Container(
-        decoration: new BoxDecoration(color: Colors.white),
-        child: Column(children: <Widget>[
+        body:
+        Column( //highest level column
+        children: [
 
-          new DropdownButton<String>(
-            items: <String>['Sun', 'Mon', 'Tue', 'Wed', "Thurs","Fri", "Sat"].map((String value) {
+        Container(
+            padding: const EdgeInsets.all(15),
+            decoration: new BoxDecoration(color: Colors.white),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+
+              Text("Day of Week:", style: TextStyle(fontSize: 20, color: Colors.black),),
+
+          DropdownButton<String>(
+            items: <String>['Sun', 'Mon', 'Tue', 'Wed', "Thurs", "Fri", "Sat"].map((String value) {
               return new DropdownMenuItem<String>(
                 value: value,
                 child: new Text(value),
@@ -51,44 +60,51 @@ class AddRestBlocksFormState extends State<AddRestBlocksForm> {
                 print(dayOfWeek);
               });
             },
-          ),
+          ),])),
 
-          Row(children: <Widget>[
+          Container(
+            padding: const EdgeInsets.all(15),
+          child :Row(children: <Widget>[
             Column(children: [
               Text("Start Hour", style: TextStyle(fontSize: 20, color: Colors.black),),
               startTimeHourPicker
             ],),
+            Text(":", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),),
             Column(children: [
               Text("Start Minute", style: TextStyle(fontSize: 20, color: Colors.black),),
               startTimeMinutePicker
             ],),],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly
           ),
-          Row(children: <Widget>[
+          ),
+
+          Container(
+              padding: const EdgeInsets.all(15),
+          child: Row(children: <Widget>[
             Column(children: [
               Text("End Hour", style: TextStyle(fontSize: 20, color: Colors.black),),
               endTimeHourPicker
             ],),
+            Text(":", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),),
             Column(children: [
               Text("End Minute", style: TextStyle(fontSize: 20, color: Colors.black),),
               endTimeMinutePicker
             ],),],
             mainAxisAlignment: MainAxisAlignment.spaceEvenly
-          ),
-          SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              onPressed: collectData,
-              child: Text('Add Rest Period'),
-            ),
-          )
+          )),
+
+          Container(
+              padding: const EdgeInsets.all(15),
+              child: SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: collectData,
+                  child: Text('Add Rest Period'),
+                ),
+              ))
           
-        ],
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-      ),
-        
-    ));
+        ]),
+    );
   }
   
   void collectData() {
