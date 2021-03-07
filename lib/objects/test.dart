@@ -9,7 +9,7 @@ class Test {
   int etc; // estimated time to complete
   bool priority;
 
-  Test({int id, String course, String name, String deadline, String workblocks, int etc, bool priority})
+  Test({int id, String course, String name, String deadline, String workblocks, int etc, bool priority});
 
   Map<String, dynamic> toMap() {
     return {

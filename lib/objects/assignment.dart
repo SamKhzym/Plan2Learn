@@ -9,7 +9,7 @@ class Assignment {
   int etc; // estimated time to complete
   bool priority;
 
-  Assignment({int id, String course, String name, String deadline, String workblocks, int etc, bool priority})
+  Assignment({int id, String course, String name, String deadline, String workblocks, int etc, bool priority});
 
   Map<String, dynamic> toMap() {
     return {
