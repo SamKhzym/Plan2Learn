@@ -88,6 +88,9 @@ class HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
+                TextButton(
+                    //onPressed: onPressed,
+                    child: Text("+"))
               ])),
 
           onTap: updateCollapsible,
@@ -165,6 +168,46 @@ class AddCourse extends StatelessWidget {
     ]),
     ));
   }
+}
+
+class AddWork extends StatelessWidget {
+
+  TextEditingController courseController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController yearController = TextEditingController();
+  TextEditingController monthController = TextEditingController();
+  TextEditingController dayController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Add a course"),
+        ),
+        body: Center(
+          child: Column(
+              children:[
+                TextField(
+                  controller: courseController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Course"
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    States.course = courseController.value.text;
+                    print(States.course);
+                    States.courseList.add(new Course.fromTitle(States.course));
+                    print(States.courseList[2]);
+                    Navigator.pop(context);
+                  },
+                  child: Text('Submit!'),
+                ),
+              ]),
+        ));
+  }
+
 }
 
 class States {
