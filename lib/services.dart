@@ -1,6 +1,6 @@
 import 'dart:async';
 
-// import 'package:flutter/widgets.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -8,7 +8,7 @@ import 'package:sqflite/sqflite.dart';
 import 'objects/assignment.dart';
 import 'objects/test.dart';
 
-// void main() async {
+void main() async {
   // Avoid errors caused by flutter upgrade.
   // Importing 'package:flutter/widgets.dart' is required.
   WidgetsFlutterBinding.ensureInitialized();
@@ -94,4 +94,4 @@ import 'objects/test.dart';
       );
     });
   }
-// }
+}
