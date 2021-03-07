@@ -57,7 +57,7 @@ class HomeScreenState extends State<HomeScreen> {
       for (int j = 0; j < numTests; j++) {
         Widget test = Container(
           child:
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             new Text(courseList[i].tests[j].name + "--  "),
             new Text(courseList[i].tests[j].deadline),
           ]),
@@ -70,12 +70,12 @@ class HomeScreenState extends State<HomeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                  "Assignments",
-                  style: TextStyle(
-                    decoration: TextDecoration.underline,
-                  ))
-            ] + assignments,
+                  Text("Assignments",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                      ))
+                ] +
+                assignments,
           ),
         ],
       );
@@ -85,12 +85,12 @@ class HomeScreenState extends State<HomeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                "Tests",
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-              ))
-            ] + tests,
+                  Text("Tests",
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                      ))
+                ] +
+                tests,
           ),
         ],
       );
@@ -126,9 +126,8 @@ class HomeScreenState extends State<HomeScreen> {
             onTap: updateCollapsible,
           ),
           Visibility(
-            visible: isCollapsed,
-            child: Column(
-              children: [
+              visible: isCollapsed,
+              child: Column(children: [
                 Container(
                   padding: const EdgeInsets.only(left: 40, bottom: 20),
                   child: assignmentsWidget,
@@ -137,14 +136,14 @@ class HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.only(left: 40),
                   child: testsWidget,
                 ),
-            ]
-              ))
+              ]))
         ]),
         TextButton(
             onPressed: () async {
               await Navigator.push(
                   context, MaterialPageRoute(builder: (context) => AddWork()));
-              updateState(); },
+              updateState();
+            },
             child: Text("+"),
             style: TextButton.styleFrom(
                 primary: Colors.black, backgroundColor: Colors.black38))
@@ -211,7 +210,7 @@ class AddCourse extends StatelessWidget {
 }
 
 class AddWork extends StatefulWidget {
-  AddWork({Key key}): super(key: key);
+  AddWork({Key key}) : super(key: key);
 
   State createState() => AddWorkState();
 }
@@ -228,7 +227,6 @@ class AddWorkState extends State<AddWork> {
       course = i;
       print(course);
     });
-
   }
 
   List<Widget> makeCourseRadioButtons() {
@@ -241,14 +239,12 @@ class AddWorkState extends State<AddWork> {
             //groupValue: course,
             value: i,
             onChanged: printStuff,
-          )
-      );
+          ));
 
       buttons.add(button);
     }
 
     return buttons;
-
   }
 
   @override
@@ -258,58 +254,53 @@ class AddWorkState extends State<AddWork> {
           title: Text("Add a test/assignment"),
         ),
         body: Center(
-          child: Column(children: [
-            Column(
-                children: makeCourseRadioButtons()
+            child: Column(children: [
+          Column(children: makeCourseRadioButtons()),
+          Row(children: [
+            Text("isAssignment?"),
+            Switch(
+              value: isAssignment,
+              onChanged: (value) {
+                setState(() {
+                  isAssignment = value;
+                  print(isAssignment);
+                });
+              },
             ),
-            Row (
-              children: [
-                Text(
-                  "isAssignment?"
-                ),
-                Switch(
-                  value: isAssignment,
-                  onChanged: (value) {
-                    setState(() {
-                      isAssignment = value;
-                      print(isAssignment);
-                    });
-                  },
-                ),
-              ]
-            ),
+          ]),
+          TextField(
+            controller: nameController,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(), labelText: "Assignment"),
+          ),
+          TextField(
+            controller: deadlineController,
+            decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: "Deadline (YYYY/MM/DD)"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (isAssignment) {
+                var assmt = new Assignment(100, States.getCourseList()[course],
+                    nameController.text, deadlineController.text, "", 0, false);
+                States.courseList[course].addAssignment(assmt);
+              } else {
+                var test = new Test(100, States.getCourseList()[course],
+                    nameController.text, deadlineController.text, "", 0, false);
+                States.courseList[course].addTest(test);
+              }
 
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: "Assignment"),
-            ),
-            TextField(
-              controller: deadlineController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: "Deadline (YYYY/MM/DD)"),
-            ),
-      ElevatedButton(
-          onPressed: () {
-            if (isAssignment) {
-              var assmt = new Assignment(100, States.getCourseList()[course], nameController.text, deadlineController.text, "", 0, false);
-              States.courseList[course].addAssignment(assmt);
-            }
-            else {
-              var test = new Test(100, States.getCourseList()[course], nameController.text, deadlineController.text, "", 0, false);
-              States.courseList[course].addTest(test);
-            }
-
-          },
-          child: Text('Submit!'),
-        )])));
+              Navigator.pop(context);
+            },
+            child: Text('Submit!'),
+          )
+        ])));
   }
-
 }
 
 class States {
   static List<String> getCourseList() {
-
     List<String> _courses = [];
 
     for (int i = 0; i < States.courseList.length; i++) {
@@ -317,85 +308,8 @@ class States {
     }
 
     return _courses;
-
   }
+
   static String course = "";
-  static List<Course> courseList = [
-    new Course("ENGINEER 1P13", [
-      new Assignment(
-        0, "eng1p13", "final report", "a day", "stuff", 50, true,
-        // id: 0,
-        // course: "eng1p13",
-        // name: "final report",
-        // deadline: "a day",
-        // workblocks: "stuff",
-        // etc: 50,
-        // priority: true,
-      ),
-      new Assignment(
-        0, "eng1p13", "final report", "a day", "stuff", 50, true,
-        // id: 1,
-        // course: "eng1p13",
-        // name: "individual research",
-        // deadline: "some day",
-        // workblocks: "things",
-        // etc: 60,
-        // priority: false,
-      ),
-    ], [
-      new Test(
-        0, "eng1p13", "final report", "a day", "stuff", 50, true,
-        // id: 0,
-        // course: "eng1p13",
-        // name: "midterm1",
-        // deadline: "day",
-        // workblocks: "yuhh",
-        // etc: 120,
-        // priority: true,
-      ),
-      new Test(
-        0, "eng1p13", "final report", "2021/03/", "stuff", 50, true,
-        // id: 0,
-        // course: "eng1p13",
-        // name: "exam",
-        // deadline: "ight",
-        // workblocks: "ok",
-        // etc: 20,
-        // priority: true,
-      ),
-    ]),
-    new Course("PHYS 1E03", [
-      new Assignment(
-        0, "eng1p13", "final report", "a day", "stuff", 50, true,
-        // id: 0,
-        // course: "phys1e03",
-        // name: "capa",
-        // deadline: "tmrw",
-        // workblocks: "ughh",
-        // etc: 90,
-        // priority: false,
-      ),
-      new Assignment(
-        0, "eng1p13", "final report", "a day", "stuff", 50, true,
-        // id: 0,
-        // course: "phys1e03",
-        // name: "lab 4",
-        // deadline: "sfjn",
-        // workblocks: "stasuff",
-        // etc: 400,
-        // priority: true,
-      )
-    ], [
-      new Test(
-        0, "eng1p13", "final report", "a day", "stuff", 50, true,
-        // id: 0,
-        // course: "phys1e03",
-        // name: "midterm 2",
-        // deadline: "one day",
-        // workblocks: "asfnvfn",
-        // etc: 200,
-        // priority: true,
-      )
-    ])
-  ];
+  static List<Course> courseList = [];
 }
