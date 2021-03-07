@@ -1,12 +1,12 @@
 class Test {
 
-  String title;
+  String name;
   DateTime deadline;
   //List<WorkBlock> workblocks;
 
-  Test(String title, DateTime deadline) {
+  Test(String name, DateTime deadline) {
 
-    this.title = title;
+    this.name = name;
     this.deadline = deadline;
     //this.workblocks = workblocks
 

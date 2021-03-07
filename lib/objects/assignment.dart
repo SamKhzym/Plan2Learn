@@ -1,12 +1,12 @@
 class Assignment {
 
-  String title;
+  String name;
   DateTime deadline;
   //List<WorkBlock> workblocks;
 
-  Assignment(String title, DateTime deadline) {
+  Assignment(String name, DateTime deadline) {
 
-    this.title = title;
+    this.name = name;
     this.deadline = deadline;
     //this.workblocks = workblocks
 

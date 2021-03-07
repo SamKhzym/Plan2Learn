@@ -6,6 +6,8 @@ import 'package:plan2learn/objects/course.dart';
 import 'package:collapsible/collapsible.dart';
 import 'package:plan2learn/objects/test.dart';
 
+import 'addcourse.dart';
+
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
 
@@ -54,7 +56,7 @@ class HomeScreenState extends State<HomeScreen> {
         Widget assignment = Container(
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            new Text(courseList[i].assignments[j].title + "--  "),
+            new Text(courseList[i].assignments[j].name + "--  "),
             new Text(DateFormat("MM/dd/yyyy")
                 .format(courseList[i].assignments[j].deadline)),
           ]),
@@ -125,6 +127,16 @@ class HomeScreenState extends State<HomeScreen> {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: createCourseWidgets(courseList),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddCourseForm())
+          );
+        },
+        tooltip: 'Add a course',
+        child: Icon(Icons.add),
       ),
     );
   }
