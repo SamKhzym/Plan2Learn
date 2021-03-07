@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:plan2learn/main.dart';
 import 'package:plan2learn/objects/assignment.dart';
 import 'package:plan2learn/objects/course.dart';
@@ -20,17 +20,73 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   List<Course> courseList = [
     new Course("ENGINEER 1P13", [
-      new Assignment("Design Report", DateTime.utc(2021, 3, 7)),
-      new Assignment("Individual Research Report", DateTime.utc(2021, 3, 10)),
+      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+        // id: 0,
+        // course: "eng1p13",
+        // name: "final report",
+        // deadline: "a day",
+        // workblocks: "stuff",
+        // etc: 50,
+        // priority: true,
+      ),
+      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+        // id: 1,
+        // course: "eng1p13",
+        // name: "individual research",
+        // deadline: "some day",
+        // workblocks: "things",
+        // etc: 60,
+        // priority: false,
+      ),
     ], [
-      new Test("Computing Practicum", DateTime.utc(2021, 3, 20)),
-      new Test("Graphics Practicum", DateTime.utc(2021, 3, 25)),
+      new Test(0,"eng1p13","final report","a day","stuff",50,true,
+        // id: 0,
+        // course: "eng1p13",
+        // name: "midterm1",
+        // deadline: "day",
+        // workblocks: "yuhh",
+        // etc: 120,
+        // priority: true,
+      ),
+      new Test(0,"eng1p13","final report","a day","stuff",50,true,
+        // id: 0,
+        // course: "eng1p13",
+        // name: "exam",
+        // deadline: "ight",
+        // workblocks: "ok",
+        // etc: 20,
+        // priority: true,
+      ),
     ]),
     new Course("PHYS 1E03", [
-      new Assignment("LONCAPA 6", DateTime.utc(2021, 3, 6)),
-      new Assignment("Lab 4", DateTime.utc(2021, 3, 17))
+      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+        // id: 0,
+        // course: "phys1e03",
+        // name: "capa",
+        // deadline: "tmrw",
+        // workblocks: "ughh",
+        // etc: 90,
+        // priority: false,
+      ),
+      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+        // id: 0,
+        // course: "phys1e03",
+        // name: "lab 4",
+        // deadline: "sfjn",
+        // workblocks: "stasuff",
+        // etc: 400,
+        // priority: true,
+      )
     ], [
-      new Test("Midterm 2", DateTime.utc(2021, 3, 17))
+      new Test(0,"eng1p13","final report","a day","stuff",50,true,
+        // id: 0,
+        // course: "phys1e03",
+        // name: "midterm 2",
+        // deadline: "one day",
+        // workblocks: "asfnvfn",
+        // etc: 200,
+        // priority: true,
+      )
     ])
   ];
 
@@ -56,9 +112,8 @@ class HomeScreenState extends State<HomeScreen> {
         Widget assignment = Container(
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            new Text(courseList[i].assignments[j].name + "--  "),
-            new Text(DateFormat("MM/dd/yyyy")
-                .format(courseList[i].assignments[j].deadline)),
+            new Text(courseList[i].assignments[j].name),
+            new Text(courseList[i].assignments[j].deadline),
           ]),
         );
         assignments.add(assignment);
