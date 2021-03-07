@@ -44,18 +44,52 @@ class HomeScreenState extends State<HomeScreen> {
         Widget assignment = Container(
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            new Text(courseList[i].assignments[j].name),
+            new Text(courseList[i].assignments[j].name + "--  "),
             new Text(courseList[i].assignments[j].deadline),
           ]),
         );
         assignments.add(assignment);
       }
 
+      List<Widget> tests = [];
+
+      for (int j = 0; j < numTests; j++) {
+        Widget test = Container(
+          child:
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            new Text(courseList[i].tests[j].name + "--  "),
+            new Text(courseList[i].tests[j].deadline),
+          ]),
+        );
+        tests.add(test);
+      }
+
       Widget assignmentsWidget = Row(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: assignments,
+            children: <Widget>[
+              Text(
+                  "Assignments",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                  ))
+            ] + assignments,
+          ),
+        ],
+      );
+
+      Widget testsWidget = Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Tests",
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+              ))
+            ] + tests,
           ),
         ],
       );
@@ -91,10 +125,18 @@ class HomeScreenState extends State<HomeScreen> {
             onTap: updateCollapsible,
           ),
           Visibility(
-              visible: isCollapsed,
-              child: Container(
-                padding: const EdgeInsets.only(left: 40),
-                child: assignmentsWidget,
+            visible: isCollapsed,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(left: 40, bottom: 20),
+                  child: assignmentsWidget,
+                ),
+                Container(
+                  padding: const EdgeInsets.only(left: 40),
+                  child: testsWidget,
+                ),
+            ]
               ))
         ]),
         TextButton(
@@ -167,18 +209,25 @@ class AddCourse extends StatelessWidget {
   }
 }
 
-class AddWork extends StatelessWidget {
+class AddWork extends StatefulWidget {
+  AddWork({Key key}): super(key: key);
+
+  State createState() => AddWorkState();
+}
+
+class AddWorkState extends State<AddWork> {
   var courses = States.getCourseList();
-  var course = "";
-  String courseSelection = "";
+  var course = 0;
   TextEditingController nameController = TextEditingController();
-  TextEditingController yearController = TextEditingController();
-  TextEditingController monthController = TextEditingController();
-  TextEditingController dayController = TextEditingController();
+  TextEditingController deadlineController = TextEditingController();
+  bool isAssignment = true;
 
   void printStuff(int i) {
-    course = courses[i];
-    print(course);
+    setState(() {
+      course = i;
+      print(course);
+    });
+
   }
 
   List<Widget> makeCourseRadioButtons() {
@@ -210,16 +259,51 @@ class AddWork extends StatelessWidget {
         body: Center(
           child: Column(children: [
             Column(
-              children: makeCourseRadioButtons()
+                children: makeCourseRadioButtons()
             ),
-            ElevatedButton(
-              onPressed: () {
-              },
-              child: Text('Submit!'),
+            Row (
+              children: [
+                Text(
+                  "isAssignment?"
+                ),
+                Switch(
+                  value: isAssignment,
+                  onChanged: (value) {
+                    setState(() {
+                      isAssignment = value;
+                      print(isAssignment);
+                    });
+                  },
+                ),
+              ]
             ),
-          ]),
-        ));
+
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: "Assignment"),
+            ),
+            TextField(
+              controller: deadlineController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: "Deadline (YYYY/MM/DD)"),
+            ),
+      ElevatedButton(
+          onPressed: () {
+            if (isAssignment) {
+              var assmt = new Assignment(100, States.getCourseList()[course], nameController.text, deadlineController.text, "", 0, false);
+              States.courseList[course].addAssignment(assmt);
+            }
+            else {
+              var test = new Test(100, States.getCourseList()[course], nameController.text, deadlineController.text, "", 0, false);
+              States.courseList[course].addTest(test);
+            }
+
+          },
+          child: Text('Submit!'),
+        )])));
   }
+
 }
 
 class States {
@@ -269,7 +353,7 @@ class States {
         // priority: true,
       ),
       new Test(
-        0, "eng1p13", "final report", "a day", "stuff", 50, true,
+        0, "eng1p13", "final report", "2021/03/", "stuff", 50, true,
         // id: 0,
         // course: "eng1p13",
         // name: "exam",
