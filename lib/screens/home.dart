@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:intl/intl.dart';
 import 'package:plan2learn/main.dart';
+import 'package:plan2learn/services.dart';
 import 'package:plan2learn/objects/assignment.dart';
 import 'package:plan2learn/objects/course.dart';
 import 'package:collapsible/collapsible.dart';
@@ -20,24 +21,26 @@ class HomeScreen extends StatefulWidget {
 class HomeScreenState extends State<HomeScreen> {
   List<Course> courseList = [
     new Course("ENGINEER 1P13", [
-      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
-        // id: 0,
-        // course: "eng1p13",
-        // name: "final report",
-        // deadline: "a day",
-        // workblocks: "stuff",
-        // etc: 50,
-        // priority: true,
-      ),
-      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
-        // id: 1,
-        // course: "eng1p13",
-        // name: "individual research",
-        // deadline: "some day",
-        // workblocks: "things",
-        // etc: 60,
-        // priority: false,
-      ),
+      await getAssignments("safd")
+      // new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+      //   // id: 0,
+      //   // course: "eng1p13",
+      //   // name: "final report",
+      //   // deadline: "a day",
+      //   // workblocks: "stuff",
+      //   // etc: 50,
+      //   // priority: true,
+      // ),
+      // new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+      //   // id: 1,
+      //   // course: "eng1p13",
+      //   // name: "individual research",
+      //   // deadline: "some day",
+      //   // workblocks: "things",
+      //   // etc: 60,
+      //   // priority: false,
+      // ),
+
     ], [
       new Test(0,"eng1p13","final report","a day","stuff",50,true,
         // id: 0,
