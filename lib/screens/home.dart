@@ -219,13 +219,8 @@ class States {
   static String course = "";
   static List<Course> courseList = [
     new Course("ENGINEER 1P13", [
-<<<<<<< HEAD
-      // await getAssignments("safd")
-      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
-=======
       new Assignment(
         0, "eng1p13", "final report", "a day", "stuff", 50, true,
->>>>>>> 1ddafd5c2da826f53466f55b622720212f6f3161
         // id: 0,
         // course: "eng1p13",
         // name: "final report",
