@@ -18,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-
   bool isCollapsed = true;
 
   void updateCollapsible() {
@@ -29,8 +28,7 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   void updateState() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   List<Widget> createCourseWidgets(List<Course> courseList) {
@@ -62,46 +60,51 @@ class HomeScreenState extends State<HomeScreen> {
         ],
       );
 
-      Widget course = Column(children: [
-        InkWell(
-          child: Container(
-              padding: const EdgeInsets.all((32)),
-              child: Column(children: [
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Text(courseList[i].title,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ))),
-                        Text(
-                            numAssignments.toString() +
-                                " assignments, " +
-                                numTests.toString() +
-                                " tests",
-                            style: TextStyle(color: Colors.grey[500]))
-                      ],
-                    ),
-                  ],
-                ),
-                TextButton(
-                    //onPressed: onPressed,
-                    child: Text("+"))
-              ])),
-
-          onTap: updateCollapsible,
-        ),
-        Visibility(
-          visible: isCollapsed,
-          child: Container(
-            padding: const EdgeInsets.only(left: 40),
-            child:assignmentsWidget,
-          )
-        )
+      Widget course = Row(children: [
+        Column(children: [
+          InkWell(
+            child: Container(
+                padding: const EdgeInsets.all((32)),
+                child: Column(children: [
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Text(courseList[i].title,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ))),
+                          Text(
+                              numAssignments.toString() +
+                                  " assignments, " +
+                                  numTests.toString() +
+                                  " tests",
+                              style: TextStyle(color: Colors.grey[500]))
+                        ],
+                      ),
+                    ],
+                  ),
+                ])),
+            onTap: updateCollapsible,
+          ),
+          Visibility(
+              visible: isCollapsed,
+              child: Container(
+                padding: const EdgeInsets.only(left: 40),
+                child: assignmentsWidget,
+              ))
+        ]),
+        TextButton(
+            onPressed: () async {
+              await Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AddWork()));
+              updateState(); },
+            child: Text("+"),
+            style: TextButton.styleFrom(
+                primary: Colors.black, backgroundColor: Colors.black38))
       ]);
 
       courses.add(course);
@@ -123,9 +126,7 @@ class HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddCourse())
-          );
+              context, MaterialPageRoute(builder: (context) => AddCourse()));
           updateState();
         },
         tooltip: 'Add a course',
@@ -136,42 +137,38 @@ class HomeScreenState extends State<HomeScreen> {
 }
 
 class AddCourse extends StatelessWidget {
-
   TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Add a course"),
-      ),
-      body: Center(
-        child: Column(
-        children:[
-          TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: "Course"
-            ),
-          ),
-          ElevatedButton(
-          onPressed: () {
-            States.course = _controller.value.text;
-            print(States.course);
-            States.courseList.add(new Course.fromTitle(States.course));
-            print(States.courseList[2]);
-            Navigator.pop(context);
-          },
-          child: Text('Submit!'),
+        appBar: AppBar(
+          title: Text("Add a course"),
         ),
-    ]),
-    ));
+        body: Center(
+          child: Column(children: [
+            TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: "Course"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                States.course = _controller.value.text;
+                print(States.course);
+                States.courseList.add(new Course.fromTitle(States.course));
+                print(States.courseList[2]);
+                Navigator.pop(context);
+              },
+              child: Text('Submit!'),
+            ),
+          ]),
+        ));
   }
 }
 
 class AddWork extends StatelessWidget {
-
+  List<String> courses = States.getCourseList();
   TextEditingController courseController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController yearController = TextEditingController();
@@ -182,39 +179,47 @@ class AddWork extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Add a course"),
+          title: Text("Add a test/assignment"),
         ),
         body: Center(
-          child: Column(
-              children:[
-                TextField(
-                  controller: courseController,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Course"
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    States.course = courseController.value.text;
-                    print(States.course);
-                    States.courseList.add(new Course.fromTitle(States.course));
-                    print(States.courseList[2]);
-                    Navigator.pop(context);
-                  },
-                  child: Text('Submit!'),
-                ),
-              ]),
+          child: Column(children: [
+            TextField(
+              controller: courseController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: "Course"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                States.course = courseController.value.text;
+                print(States.course);
+                States.courseList.add(new Course.fromTitle(States.course));
+                print(States.courseList[2]);
+                Navigator.pop(context);
+              },
+              child: Text('Submit!'),
+            ),
+          ]),
         ));
   }
-
 }
 
 class States {
+  static List<String> getCourseList() {
+
+    List<String> _courses = [];
+
+    for (int i = 0; i < States.courseList.length; i++) {
+      _courses.add(States.courseList[i].title);
+    }
+
+    return _courses;
+
+  }
   static String course = "";
   static List<Course> courseList = [
     new Course("ENGINEER 1P13", [
-      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+      new Assignment(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
         // id: 0,
         // course: "eng1p13",
         // name: "final report",
@@ -223,7 +228,8 @@ class States {
         // etc: 50,
         // priority: true,
       ),
-      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+      new Assignment(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
         // id: 1,
         // course: "eng1p13",
         // name: "individual research",
@@ -233,7 +239,8 @@ class States {
         // priority: false,
       ),
     ], [
-      new Test(0,"eng1p13","final report","a day","stuff",50,true,
+      new Test(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
         // id: 0,
         // course: "eng1p13",
         // name: "midterm1",
@@ -242,7 +249,8 @@ class States {
         // etc: 120,
         // priority: true,
       ),
-      new Test(0,"eng1p13","final report","a day","stuff",50,true,
+      new Test(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
         // id: 0,
         // course: "eng1p13",
         // name: "exam",
@@ -253,7 +261,8 @@ class States {
       ),
     ]),
     new Course("PHYS 1E03", [
-      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+      new Assignment(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
         // id: 0,
         // course: "phys1e03",
         // name: "capa",
@@ -262,7 +271,8 @@ class States {
         // etc: 90,
         // priority: false,
       ),
-      new Assignment(0,"eng1p13","final report","a day","stuff",50,true,
+      new Assignment(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
         // id: 0,
         // course: "phys1e03",
         // name: "lab 4",
@@ -272,7 +282,8 @@ class States {
         // priority: true,
       )
     ], [
-      new Test(0,"eng1p13","final report","a day","stuff",50,true,
+      new Test(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
         // id: 0,
         // course: "phys1e03",
         // name: "midterm 2",
