@@ -49,10 +49,15 @@ void main() async {
     );
   }
 
-  Future<List<Test>> getTests() async {
+  Future<List<Test>> getTests(String _course) async {
     final Database db = await database;
 
-    final List<Map<String, dynamic>> maps = await db.query('work');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'work',
+      columns: ['id','course','test','name','deadline','workblocks','etc','priority'],
+      where: '"course" = ?',
+      whereArgs: [_course],
+    );
 
     return List.generate(maps.length, (i) {
       return Test(maps[i]['id'],maps[i]['course'],maps[i]['name'],maps[i]['deadline'],maps[i]['workblocks'],maps[i]['etc'],maps[i]['priority'],
@@ -67,10 +72,15 @@ void main() async {
     });
   }
 
-  Future<List<Assignment>> getAssignments() async {
+  Future<List<Assignment>> getAssignments(String _course) async {
     final Database db = await database;
 
-    final List<Map<String, dynamic>> maps = await db.query('work');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'work',
+      columns: ['id','course','test','name','deadline','workblocks','etc','priority'],
+      where: '"course" = ?',
+      whereArgs: [_course],
+    );
 
     return List.generate(maps.length, (i) {
       return Assignment(maps[i]['id'],maps[i]['course'],maps[i]['name'],maps[i]['deadline'],maps[i]['workblocks'],maps[i]['etc'],maps[i]['priority'],
