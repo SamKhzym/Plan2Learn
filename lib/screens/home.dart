@@ -66,7 +66,7 @@ class HomeScreenState extends State<HomeScreen> {
       if (numTests == 0) {
         tests.add(
             Container(
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
               new Text("None!")
             ])
         ));
@@ -75,7 +75,7 @@ class HomeScreenState extends State<HomeScreen> {
         for (int j = 0; j < numTests; j++) {
           Widget test = Container(
             child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
               new Text(courseList[i].tests[j].name + "--  "),
               new Text(courseList[i].tests[j].deadline),
             ]),
@@ -117,7 +117,9 @@ class HomeScreenState extends State<HomeScreen> {
       );
 
       Widget course = Row(children: [
-        Column(children: [
+        Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
           InkWell(
             child: Container(
                 padding: const EdgeInsets.all((32)),
@@ -148,15 +150,16 @@ class HomeScreenState extends State<HomeScreen> {
           ),
           Visibility(
               visible: isCollapsed,
-              child: Column(children: [
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                 Container(
                   padding: const EdgeInsets.only(left: 40, bottom: 20),
                   child: assignmentsWidget,
                 ),
-                Container(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: testsWidget,
-                ),
+    Container(
+    padding: const EdgeInsets.only(left: 40, bottom: 20),
+                  child: testsWidget,),
               ]))
         ]),
         TextButton(
