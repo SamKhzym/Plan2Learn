@@ -49,38 +49,48 @@ void main() async {
     );
   }
 
-  Future<List<Test>> getTests() async {
+  Future<List<Test>> getTests(String _course) async {
     final Database db = await database;
 
-    final List<Map<String, dynamic>> maps = await db.query('work');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'work',
+      columns: ['id','course','test','name','deadline','workblocks','etc','priority'],
+      where: '"course" = ?',
+      whereArgs: [_course],
+    );
 
     return List.generate(maps.length, (i) {
-      return Test(
-        id: maps[i]['id'],
-        course: maps[i]['course'],
-        name: maps[i]['name'],
-        deadline: maps[i]['deadline'],
-        workblocks: maps[i]['workblocks'],
-        etc: maps[i]['etc'],
-        priority: maps[i]['priority'],
+      return Test(maps[i]['id'],maps[i]['course'],maps[i]['name'],maps[i]['deadline'],maps[i]['workblocks'],maps[i]['etc'],maps[i]['priority'],
+        // id: maps[i]['id'],
+        // course: maps[i]['course'],
+        // name: maps[i]['name'],
+        // deadline: maps[i]['deadline'],
+        // workblocks: maps[i]['workblocks'],
+        // etc: maps[i]['etc'],
+        // priority: maps[i]['priority'],
       );
     });
   }
 
-  Future<List<Assignment>> getAssignments() async {
+  Future<List<Assignment>> getAssignments(String _course) async {
     final Database db = await database;
 
-    final List<Map<String, dynamic>> maps = await db.query('work');
+    final List<Map<String, dynamic>> maps = await db.query(
+      'work',
+      columns: ['id','course','test','name','deadline','workblocks','etc','priority'],
+      where: '"course" = ?',
+      whereArgs: [_course],
+    );
 
     return List.generate(maps.length, (i) {
-      return Assignment(
-        id: maps[i]['id'],
-        course: maps[i]['course'],
-        name: maps[i]['name'],
-        deadline: maps[i]['deadline'],
-        workblocks: maps[i]['workblocks'],
-        etc: maps[i]['etc'],
-        priority: maps[i]['priority'],
+      return Assignment(maps[i]['id'],maps[i]['course'],maps[i]['name'],maps[i]['deadline'],maps[i]['workblocks'],maps[i]['etc'],maps[i]['priority'],
+        // id: maps[i]['id'],
+        // course: maps[i]['course'],
+        // name: maps[i]['name'],
+        // deadline: maps[i]['deadline'],
+        // workblocks: maps[i]['workblocks'],
+        // etc: maps[i]['etc'],
+        // priority: maps[i]['priority'],
       );
     });
   }

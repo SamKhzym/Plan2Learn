@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 import 'package:plan2learn/main.dart';
 import 'package:plan2learn/objects/assignment.dart';
 import 'package:plan2learn/objects/course.dart';
@@ -18,22 +18,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  List<Course> courseList = [
-    new Course("ENGINEER 1P13", [
-      new Assignment("Design Report", DateTime.utc(2021, 3, 7)),
-      new Assignment("Individual Research Report", DateTime.utc(2021, 3, 10)),
-    ], [
-      new Test("Computing Practicum", DateTime.utc(2021, 3, 20)),
-      new Test("Graphics Practicum", DateTime.utc(2021, 3, 25)),
-    ]),
-    new Course("PHYS 1E03", [
-      new Assignment("LONCAPA 6", DateTime.utc(2021, 3, 6)),
-      new Assignment("Lab 4", DateTime.utc(2021, 3, 17))
-    ], [
-      new Test("Midterm 2", DateTime.utc(2021, 3, 17))
-    ])
-  ];
-
   bool isCollapsed = true;
 
   void updateCollapsible() {
@@ -41,6 +25,10 @@ class HomeScreenState extends State<HomeScreen> {
     setState(() {
       isCollapsed = !isCollapsed;
     });
+  }
+
+  void updateState() {
+    setState(() {});
   }
 
   List<Widget> createCourseWidgets(List<Course> courseList) {
@@ -56,9 +44,8 @@ class HomeScreenState extends State<HomeScreen> {
         Widget assignment = Container(
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            new Text(courseList[i].assignments[j].name + "--  "),
-            new Text(DateFormat("MM/dd/yyyy")
-                .format(courseList[i].assignments[j].deadline)),
+            new Text(courseList[i].assignments[j].name),
+            new Text(courseList[i].assignments[j].deadline),
           ]),
         );
         assignments.add(assignment);
@@ -73,43 +60,51 @@ class HomeScreenState extends State<HomeScreen> {
         ],
       );
 
-      Widget course = Column(children: [
-        InkWell(
-          child: Container(
-              padding: const EdgeInsets.all((32)),
-              child: Column(children: [
-                Row(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Text(courseList[i].title,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ))),
-                        Text(
-                            numAssignments.toString() +
-                                " assignments, " +
-                                numTests.toString() +
-                                " tests",
-                            style: TextStyle(color: Colors.grey[500]))
-                      ],
-                    ),
-                  ],
-                ),
-              ])),
-
-          onTap: updateCollapsible,
-        ),
-        Visibility(
-          visible: isCollapsed,
-          child: Container(
-            padding: const EdgeInsets.only(left: 40),
-            child:assignmentsWidget,
-          )
-        )
+      Widget course = Row(children: [
+        Column(children: [
+          InkWell(
+            child: Container(
+                padding: const EdgeInsets.all((32)),
+                child: Column(children: [
+                  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child: Text(courseList[i].title,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ))),
+                          Text(
+                              numAssignments.toString() +
+                                  " assignments, " +
+                                  numTests.toString() +
+                                  " tests",
+                              style: TextStyle(color: Colors.grey[500]))
+                        ],
+                      ),
+                    ],
+                  ),
+                ])),
+            onTap: updateCollapsible,
+          ),
+          Visibility(
+              visible: isCollapsed,
+              child: Container(
+                padding: const EdgeInsets.only(left: 40),
+                child: assignmentsWidget,
+              ))
+        ]),
+        TextButton(
+            onPressed: () async {
+              await Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AddWork()));
+              updateState(); },
+            child: Text("+"),
+            style: TextButton.styleFrom(
+                primary: Colors.black, backgroundColor: Colors.black38))
       ]);
 
       courses.add(course);
@@ -126,18 +121,177 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       body: ListView(
         padding: const EdgeInsets.all(8),
-        children: createCourseWidgets(courseList),
+        children: createCourseWidgets(States.courseList),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddCourseForm())
-          );
+        onPressed: () async {
+          await Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddCourse()));
+          updateState();
         },
         tooltip: 'Add a course',
         child: Icon(Icons.add),
       ),
     );
   }
+}
+
+class AddCourse extends StatelessWidget {
+  TextEditingController _controller = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Add a course"),
+        ),
+        body: Center(
+          child: Column(children: [
+            TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: "Course"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                States.course = _controller.value.text;
+                print(States.course);
+                States.courseList.add(new Course.fromTitle(States.course));
+                print(States.courseList[2]);
+                Navigator.pop(context);
+              },
+              child: Text('Submit!'),
+            ),
+          ]),
+        ));
+  }
+}
+
+class AddWork extends StatelessWidget {
+  List<String> courses = States.getCourseList();
+  TextEditingController courseController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController yearController = TextEditingController();
+  TextEditingController monthController = TextEditingController();
+  TextEditingController dayController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Add a test/assignment"),
+        ),
+        body: Center(
+          child: Column(children: [
+            TextField(
+              controller: courseController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(), labelText: "Course"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                States.course = courseController.value.text;
+                print(States.course);
+                States.courseList.add(new Course.fromTitle(States.course));
+                print(States.courseList[2]);
+                Navigator.pop(context);
+              },
+              child: Text('Submit!'),
+            ),
+          ]),
+        ));
+  }
+}
+
+class States {
+  static List<String> getCourseList() {
+
+    List<String> _courses = [];
+
+    for (int i = 0; i < States.courseList.length; i++) {
+      _courses.add(States.courseList[i].title);
+    }
+
+    return _courses;
+
+  }
+  static String course = "";
+  static List<Course> courseList = [
+    new Course("ENGINEER 1P13", [
+      new Assignment(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
+        // id: 0,
+        // course: "eng1p13",
+        // name: "final report",
+        // deadline: "a day",
+        // workblocks: "stuff",
+        // etc: 50,
+        // priority: true,
+      ),
+      new Assignment(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
+        // id: 1,
+        // course: "eng1p13",
+        // name: "individual research",
+        // deadline: "some day",
+        // workblocks: "things",
+        // etc: 60,
+        // priority: false,
+      ),
+    ], [
+      new Test(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
+        // id: 0,
+        // course: "eng1p13",
+        // name: "midterm1",
+        // deadline: "day",
+        // workblocks: "yuhh",
+        // etc: 120,
+        // priority: true,
+      ),
+      new Test(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
+        // id: 0,
+        // course: "eng1p13",
+        // name: "exam",
+        // deadline: "ight",
+        // workblocks: "ok",
+        // etc: 20,
+        // priority: true,
+      ),
+    ]),
+    new Course("PHYS 1E03", [
+      new Assignment(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
+        // id: 0,
+        // course: "phys1e03",
+        // name: "capa",
+        // deadline: "tmrw",
+        // workblocks: "ughh",
+        // etc: 90,
+        // priority: false,
+      ),
+      new Assignment(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
+        // id: 0,
+        // course: "phys1e03",
+        // name: "lab 4",
+        // deadline: "sfjn",
+        // workblocks: "stasuff",
+        // etc: 400,
+        // priority: true,
+      )
+    ], [
+      new Test(
+        0, "eng1p13", "final report", "a day", "stuff", 50, true,
+        // id: 0,
+        // course: "phys1e03",
+        // name: "midterm 2",
+        // deadline: "one day",
+        // workblocks: "asfnvfn",
+        // etc: 200,
+        // priority: true,
+      )
+    ])
+  ];
 }

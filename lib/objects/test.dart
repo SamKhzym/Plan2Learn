@@ -9,7 +9,17 @@ class Test {
   int etc; // estimated time to complete
   bool priority;
 
-  Test({int id, String course, String name, String deadline, String workblocks, int etc, bool priority});
+  // Test({int id, String course, String name, String deadline, String workblocks, int etc, bool priority});
+
+  Test(int id, String course, String name, String deadline, String workblocks, int etc, bool priority){
+    this.id = id;
+    this.course = course;
+    this.name = name;
+    this.deadline = deadline;
+    this.workblocks = workblocks;
+    this.etc = etc;
+    this.priority = priority;
+  }
 
   Map<String, dynamic> toMap() {
     return {
