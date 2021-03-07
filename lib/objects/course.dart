@@ -15,4 +15,12 @@ class Course {
 
   }
 
+  Course.fromTitle(String title) {
+
+    this.title = title;
+    this.assignments = [];
+    this.tests = [];
+
+  }
+
 }
