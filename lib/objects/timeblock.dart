@@ -1,9 +1,6 @@
 class TimeBlock {
-  DateTime startTime;
-  DateTime endTime;
+  String startTime;
+  String endTime;
 
-  TimeBlock(DateTime start, DateTime end) {
-    this.startTime = start;
-    this.endTime = end;
-  }
+  TimeBlock(start, end);
 }
