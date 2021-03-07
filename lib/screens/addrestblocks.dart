@@ -23,16 +23,36 @@ class AddRestBlocksFormState extends State<AddRestBlocksForm> {
   int startTimeMinuteValue = 0;
   int endTimeHourValue = 0;
   int endTimeMinuteValue = 0;
+  String dayOfWeek = "Sunday";
 
   @override
   Widget build(BuildContext context) {
     _initNumberPickers();
-    return Container(
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Set Rest Period"),
+        ),
+        body: Container(
         decoration: new BoxDecoration(color: Colors.white),
         child: Column(children: <Widget>[
-          Text(
-            "Set Rest Period"
+
+          new DropdownButton<String>(
+            items: <String>['Sun', 'Mon', 'Tue', 'Wed', "Thurs","Fri", "Sat"].map((String value) {
+              return new DropdownMenuItem<String>(
+                value: value,
+                child: new Text(value),
+              );
+            }).toList(),
+            hint: Text("Day of the Week:"),
+            value: dayOfWeek,
+            onChanged: (newValue) {
+              setState(() {
+                dayOfWeek = newValue;
+                print(dayOfWeek);
+              });
+            },
           ),
+
           Row(children: <Widget>[
             Column(children: [
               Text("Start Hour", style: TextStyle(fontSize: 20, color: Colors.black),),
@@ -68,7 +88,7 @@ class AddRestBlocksFormState extends State<AddRestBlocksForm> {
         crossAxisAlignment: CrossAxisAlignment.center,
       ),
         
-    );
+    ));
   }
   
   void collectData() {

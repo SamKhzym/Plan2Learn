@@ -8,6 +8,7 @@ import 'package:collapsible/collapsible.dart';
 import 'package:plan2learn/objects/test.dart';
 
 import 'addcourse.dart';
+import 'addrestblocks.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -41,6 +42,14 @@ class HomeScreenState extends State<HomeScreen> {
 
       List<Widget> assignments = [];
 
+      if (numAssignments == 0) {
+        assignments.add(
+            Container(
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                  new Text("None!")
+                ])
+            ));
+      }
       for (int j = 0; j < numAssignments; j++) {
         Widget assignment = Container(
           child:
@@ -54,16 +63,28 @@ class HomeScreenState extends State<HomeScreen> {
 
       List<Widget> tests = [];
 
-      for (int j = 0; j < numTests; j++) {
-        Widget test = Container(
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            new Text(courseList[i].tests[j].name + "--  "),
-            new Text(courseList[i].tests[j].deadline),
-          ]),
-        );
-        tests.add(test);
+      if (numTests == 0) {
+        tests.add(
+            Container(
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              new Text("None!")
+            ])
+        ));
       }
+      else {
+        for (int j = 0; j < numTests; j++) {
+          Widget test = Container(
+            child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              new Text(courseList[i].tests[j].name + "--  "),
+              new Text(courseList[i].tests[j].deadline),
+            ]),
+          );
+          tests.add(test);
+        }
+      }
+
+
 
       Widget assignmentsWidget = Row(
         children: [
@@ -163,7 +184,18 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       body: ListView(
         padding: const EdgeInsets.all(8),
-        children: createCourseWidgets(States.courseList),
+        children: createCourseWidgets(States.courseList) +
+        [
+          TextButton(
+          onPressed: () async {
+            await Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AddRestBlocksForm()));
+            updateState();
+          },
+          child: Text("SCHEDULE SETTINGS"),
+          style: TextButton.styleFrom(
+              primary: Colors.white, backgroundColor: Colors.red))
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
