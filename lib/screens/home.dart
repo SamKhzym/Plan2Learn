@@ -168,12 +168,38 @@ class AddCourse extends StatelessWidget {
 }
 
 class AddWork extends StatelessWidget {
-  List<String> courses = States.getCourseList();
-  TextEditingController courseController = TextEditingController();
+  var courses = States.getCourseList();
+  var course = "";
+  String courseSelection = "";
   TextEditingController nameController = TextEditingController();
   TextEditingController yearController = TextEditingController();
   TextEditingController monthController = TextEditingController();
   TextEditingController dayController = TextEditingController();
+
+  void printStuff(int i) {
+    course = courses[i];
+    print(course);
+  }
+
+  List<Widget> makeCourseRadioButtons() {
+    List<Widget> buttons = [];
+
+    for (int i = 0; i < States.getCourseList().length; i++) {
+      var button = ListTile(
+          title: Text(States.getCourseList()[i]),
+          leading: Radio(
+            //groupValue: course,
+            value: i,
+            onChanged: printStuff,
+          )
+      );
+
+      buttons.add(button);
+    }
+
+    return buttons;
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,18 +209,11 @@ class AddWork extends StatelessWidget {
         ),
         body: Center(
           child: Column(children: [
-            TextField(
-              controller: courseController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: "Course"),
+            Column(
+              children: makeCourseRadioButtons()
             ),
             ElevatedButton(
               onPressed: () {
-                States.course = courseController.value.text;
-                print(States.course);
-                States.courseList.add(new Course.fromTitle(States.course));
-                print(States.courseList[2]);
-                Navigator.pop(context);
               },
               child: Text('Submit!'),
             ),
