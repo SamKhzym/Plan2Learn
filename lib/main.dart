@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plan2learn/screens/addcourse.dart';
 import 'package:plan2learn/screens/home.dart';
 
 void main() {
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: AddCourseForm(),
     );
   }
 }

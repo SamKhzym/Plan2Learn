@@ -1,5 +1,6 @@
 class Assignment {
 
+
   int id;
   String course;
   static const bool test = false;
