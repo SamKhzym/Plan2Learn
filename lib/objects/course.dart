@@ -23,4 +23,12 @@ class Course {
 
   }
 
+  void addAssignment(Assignment assmt) {
+    this.assignments.add(assmt);
+  }
+
+  void addTest(Test test) {
+    this.tests.add(test);
+  }
+
 }
